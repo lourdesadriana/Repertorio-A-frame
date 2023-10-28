@@ -1,0 +1,198 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repertorio</title>
+
+    <!-- icono del la pestaña -->
+    <!-- <link rel="shortcut icon" href="./imagenes/inflable.png"> -->
+
+    <!-- link de la libreria para leer las etiquetas de aframe -->
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!-- script para gifs -->
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-component/master/dist/aframe-gif-component.min.js"></script>
+    <!-- para leer animación -->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <!-- script para texturas -->
+    <script src="https://cdn.jsdelivr.net/npm/aframe-enviropacks@latest/aframe-enviropacks.js"></script>
+    <!-- script para texto en 3d -->
+    <script
+        src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+    <!-- scripts para colisiones y físicas -->
+    <script
+        src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script> src = "https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js" </script>
+    <!-- scripts movimiento de la cámara -->
+    <script> src = "https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js" </script>
+    <script> src = "https://unpkg.com/super-hands@2.0.2/dist/super-hands.min.js" </script>
+    <!-- scripts para partículas-->
+    <script src="https://unpkg.com/aframe-animation-component@3.2.1/dist/aframe-animation-component.min.js"></script>
+    <script
+        src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-extras.ocean@%5E3.5.x/dist/aframe-extras.ocean.min.js"></script>
+    <script src="https://unpkg.com/aframe-gradient-sky@1.2.0/dist/gradientsky.min.js"></script>
+    <!-- scripts para enviroments-->
+    <script
+        src="https://unpkg.com/aframe-environment-component@1.2.0/dist/aframe-environment-component.min.js"></script>
+    <!-- scripts para truco de transparencia en modelos 3d-->
+    <script>
+        AFRAME.registerComponent('model-opacity', {
+            schema: { default: 1.0 },
+            init: function () {
+                // this.el.addEventListener('model-loaded', this.update.bind(this));
+                this.el.addEventListener("model-loaded", () => {
+                    const object3DEl = this.el.object3DMap;
+                    ;
+
+                    var mesh = this.el.getObject3D('mesh'); // For hand, the result is undefined
+                    // var mesh = this.el.object3DMap.mesh; // For hand, the result is undefined
+                    console.log(mesh);
+                    var data = this.data;
+                    if (!mesh) { return; }
+                    mesh.traverse(function (node) {
+                        if (node.isMesh) {
+                            ;
+                            node.material.opacity = data;
+                            node.material.transparent = data < 1.0;
+                            node.material.needsUpdate = true;
+                        }
+                    });
+                }, 2000)
+
+
+            },
+            update: function () {
+                var mesh = this.el.getObject3D('mesh');
+                var data = this.data;
+                if (!mesh) { return; }
+                mesh.traverse(function (node) {
+                    if (node.isMesh) {
+                        ;
+                        node.material.opacity = data;
+                        node.material.transparent = data < 1.0;
+                        node.material.needsUpdate = true;
+                    }
+                });
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <a-scene phisics="debug:true">
+
+
+
+        <a-entity
+            environment="ground: noise; groundColor: #40376d; groundColor2: #9a4228; dressing: stones; dressingAmount: 200; dressingColor: #cb25b4; dressingScale: 1.32; dressingOnPlayArea: 0.05; grid: crosses"
+            visible=""><a-entity class="environment" position="0 50 0"
+                light="type: hemisphere; color: #CEE4F0; intensity: 0.5722448147213711; groundColor: #40376d"
+                visible=""></a-entity><a-entity class="environment" position="-0.11 1 0.33"
+                light="intensity: 0.5722448147213711; shadowCameraLeft: -10; shadowCameraBottom: -10; shadowCameraRight: 10; shadowCameraTop: 10"
+                visible=""></a-entity><a-entity rotation="-90 0 0" class="environmentGround environment" visible=""
+                scale="1 1 3" shadow="cast: false; receive: false"></a-entity><a-entity
+                class="environmentDressing environment" visible=""></a-entity><a-sky radius="200" theta-length="110"
+                class="environment"
+                material="shader: skyshader; sunPosition: -0.10389385923870163 0.9444896294427422 0.31168157771610494"
+                visible="" geometry=""></a-sky><a-entity id="stars"></a-entity></a-entity>
+
+        <a-asset>
+            <!-- Modelos -->
+            <a-asset-item id="colchon" src="/Biblioteca/Modelos/matress.glb"></a-asset-item>
+            <a-asset-item id="girl" src="/Biblioteca/Modelos/girl.gltf"></a-asset-item>
+
+            <!-- Imagenes -->
+            <img id="marmol-rosa" src="/Biblioteca/Imagenes/fondo-textura-marmol-rosa-sucio.jpg"></img>
+
+            <img id="perro" src="/Biblioteca/Imagenes/dog.jpg"></img>
+
+        </a-asset>
+
+
+        <!-- Colchon -->
+        <a-entity dynamic-body gltf-model="#colchon" position="0 0 0" rotation="0 -90 0" scale="3 3 3"></a-entity>
+        <a-entity dynamic-body animation-mixer gltf-model="#girl" position="-10 0 4" rotation="2 2 2" scale="2 2 2"></a-entity>
+
+        <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+        <!-- Pelota roja -->
+        <a-sphere position="0 8 -4" radius="1.25" color="#EF2D5E" scale="0.13 0.13 0.13"
+            animation="property: position; to: 0 1 -4; easing: easeInOutSine; loop: true" material=""
+            geometry=""></a-sphere>
+
+        <a-sphere position="2 8 -4" radius="1.25" color="#" scale="0.13 0.13 0.13"
+            animation="property: position; to: 2 1 -4; easing: easeInOutSine; loop: true" material=""
+            geometry=""></a-sphere>
+
+        <!-- Camara -->
+        <!-- <a-camera camera position 30 1 -8 look-controls="enabled:true"></a-camera> -->
+
+        <a-box position="-0.01788 0.50352 1.01042" rotation="" scale=""
+            material="transparent: true; blending: multiply; color: #6d2267; emissive: #120707; emissiveIntensity: 0.95; fog: false; roughness: 1; roughnessTextureRepeat: 0.94 1"
+            geometry="segmentsWidth: 4"></a-box>
+        <!-- Paredes -->
+        <a-box position="-3.59343 1.44847 -1.36726" rotation="" scale="0.16 2.81 10.15"
+            material="src: #marmol-rosa" geometry="segmentsWidth: 4"></a-box>
+        <a-box position="1.41336 1.52237 -6.54139" rotation="-0.79 90 0" scale="0.16 2.81 10.15"
+            material="src:#marmol-rosa" geometry="segmentsWidth: 4"></a-box>
+        <a-box position="6.42029 1.60114 -1.51854" rotation="" scale="0.16 2.81 10.15"
+            material="src: #marmol-rosa" geometry="segmentsWidth: 4"></a-box>
+
+            <a-box position="1.36942 2.97985 -1.51854" rotation="" scale="-10.16 -0.23 10.15" material="color: #3e1c45" geometry=""></a-box>
+
+            <!-- Figuras geométricas -->
+            <a-tetrahedron color="#6d2267" radius="5" opacity="0.8" scale="0.4 0.4 0.4" position="1 6 1" 
+            rotation="36 0 134" material="color: #c1951a" geometry=""></a-tetrahedron>
+
+            <a-cylinder color="#53F55C" radius="5" opacity="0.8" scale="0.4 0.4 0.4" position="1 6 1" rotation="36 0 134" material="color: #1ac125" geometry=""> </a-cylinder>
+
+            <a-torus material="color: #4F2211" geometry="" visible="" position="-2.66513 4.73103 2.21594" rotation="0 0 1.6"></a-torus>
+
+            <a-torus-knot src="#marmol-rosa" geometry="p: 2.02; radius: 3.46; radiusTubular: 0.1" visible="" position="-2.66513 1.71137 11.4373" rotation="0 90 90" animation="property:rotation; to: 9 90 360; dur: 10000 easing:linear; loop:true;" ></a-torus-knot>
+
+            <a-sphere position="4.06368 1.75352 6.85302" material="color: #630d3b" geometry=""></a-sphere>
+
+            <a-sphere position="8 1.27798 11.82399" material="color: #83B5EB" geometry="primitive: dodecahedron" animation__escala="property:scale; to: .5 .5 .5; loop:true; dur:909; easing:linear; dir:alternate" animation__rotacion="property:rotation; to: 0 360 0; loop:true; dur:900; easing:linear"></a-sphere> 
+
+            <a-sphere position="12 1.27798 11.82399" material="color: #EB54C3" geometry="primitive: dodecahedron" animation__escala="property:scale; to: .5 .5 .5; loop:true; dur:909; easing:linear; dir:alternate" animation__rotacion="property:rotation; to: 0 360 0; loop:true; dur:900; easing:linear"></a-sphere>
+
+            <a-sphere position="16 1.27798 11.82399" material="color: #5EC47B" geometry="primitive: dodecahedron" animation__escala="property:scale; to: .5 .5 .5; loop:true; dur:909; easing:linear; dir:alternate" animation__rotacion="property:rotation; to: 0 360 0; loop:true; dur:900; easing:linear"></a-sphere>
+
+            <a-sphere position="20 1.27798 11.82399" material="color: #EB8383" geometry="primitive: dodecahedron" animation__escala="property:scale; to: .5 .5 .5; loop:true; dur:909; easing:linear; dir:alternate" animation__rotacion="property:rotation; to: 0 360 0; loop:true; dur:900; easing:linear"></a-sphere>
+
+            <!-- Cubo con GIF -->
+            <a-entity position="2.8009 1.56428 15.12942" rotatiin="0 0 0" geometry="" material="shader: gif; src: url(https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDQxZTYzMGZ5NjlvazI0dHpwaHY3MWhybjZ0ZzZnOW0yMjRzaGh4aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xTiN0CNHgoRf1Ha7CM/giphy.gif)" scale="2 2 1"></a-entity>
+
+<!-- Sonidos -->
+<a-sound src: url()></a-sound>
+
+
+<!-- Imagenes -->
+<a-image src="#perro" scale="2 2 2" position="1.69689 1.51164 -6.18835" rotation="0 180 0" material="" geometry=""></a-image>
+
+<!-- GIFS -->
+<!-- <a-entity position="1.723 1.743 -6.804" geometry="primitive: plane"
+material="shader: gif; src: url(./Biblioteca/Gifs/nerv.gif); transparent: true; alphaTest: 0.5; side: double; repeat: 2 2"
+rotation="0 180 0"></a-entity> -->
+
+        <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+        <a-plane position="0 0.1 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+        <a-sky color="#ECECEC"></a-sky>
+
+<!-- PAREDES ESTÁTICAS -->
+<a-box static-body position="19 0 18" scale="10 10 1" material="src: #marmol-rosa"></a-box>
+
+
+
+<!-- CUBO INTERACCIÓN -->
+
+<!-- PLANO CON INTERACCION DE WIREFRAME -->
+<a-plane position="1 2 20" rotation="90 0 0" scale="2 2" color="blue"></a-plane>
+
+
+    </a-scene>
+</body>
+
+</html>
